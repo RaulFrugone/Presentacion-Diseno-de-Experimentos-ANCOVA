@@ -324,7 +324,7 @@ $$
 y_{ij} = \mu + \tau_j + \beta(x_{ij}- x_{\bullet\bullet}) + \varepsilon_{ij}
 $$
 
-Considerando que la estimación de los parámetros del modelo anterior por máxima verosimilitud. Así, la función de Máxima Verosimilitud queda expresada como:
+Para esto es necesario realizar la estimación de los parámetros del modelo. Considerando que la estimación de los parámetros del modelo anterior por máxima verosimilitud. Así, la función de Máxima Verosimilitud queda expresada como:
 
 
 $$
@@ -347,30 +347,157 @@ $$
 
 Luego, a partir de las derivadas de $\ell$ con respecto a los parámetros $\mu$, $\tau$ , $\beta$ y $\sigma^2$ con la posterior igualación a 0 y despejando se obtiene que:
 
+Para la estimación de $\mu$ se parte derivando la función de log-verosimilitud con respecto a $\mu$ e igualando a cero. Se obtiene:
+
 $$
-\mu : \hat{\mu} = \frac{y_{\bullet\bullet} - n \cdot \sum_{j=1}^t \hat{\tau}_j}{N} = \bar y_{..}
-$$
-$$
-\tau_j :  \hat{\tau_j}= \frac{y_{\bullet j} - n\cdot \hat{\mu} -  \hat{\beta} \sum_{i=1}^n(x_{ij} - \bar{x}_{\bullet j})}{n} = \bar y_{.j}-\bar y_{..}-\beta(\bar x_{.j}-\bar x_{..})
+\sum_{i=1}^{n}\sum_{j=1}^{t}
+\bigl(y_{ij}-\mu-\tau_j-\beta(x_{ij}-\bar x_{..})\bigr)=0 .
 $$
 
-$$\beta : \hat{\beta} =  \frac{SCT_{xy}- \sum_{j=1}^t \hat{\tau}_j \sum_{i=1}^n(x_{ij} - \bar{x}_{\bullet j})}{SCT_{xx}} = 
-                   \frac{\sum_{i=1}^n\sum_{j=1}^{t}(y_{ij}-\mu-\tau_j)(x_{ij}-\bar x_{..})}
-                        {\sum_{i=1}^n\sum_{j=1}^{t}(x_{ij}-\bar x_{..})^2}$$
+Luego, separamos las sumatorias y resaltamos los términos que dependen de $\mu$:
 
-$$\sigma^2: \hat{\sigma}^2
-        = \frac{1}{N}
-          \sum_{j=1}^t\sum_{i=1}^{n}
-            \bigl(y_{ij}-\mu-\tau_j-\beta(x_{ij}-\bar x_{..})\bigr)^2$$
-A partir de la siguiente condición $\sum_{j=1}^t \hat{\tau}_j=0$ obtenemos:
+$$
+\sum_{i=1}^{n}\sum_{j=1}^{t} y_{ij}\;
+-\; N\mu
+-\; t\sum_{j=1}^{t}\tau_j
+-\; \beta\sum_{i=1}^{n}\sum_{j=1}^{t}(x_{ij}-\bar x_{..})=0 .
+$$
 
-$\hat{\mu} = \bar{y}_{\bullet\bullet}$
+Obsérvese que el segundo y el cuarto sumando se simplifican empleando la identidad  
 
-$\hat{\tau} = \bar{y}_{\bullet j} - \bar{y}_{\bullet \bullet} - \hat{\beta}(x_{\bullet j} - x_{\bullet \bullet})$
+$$
+\sum_{i=1}^{n}\sum_{j=1}^{t}(x_{ij}-\bar x_{..}) = 0 ,
+$$
 
-Para $\beta$ lo obtenemos mediante:
+por construcción $\bar x_{..}$ es el promedio global de $x$.  
+
+Finalmente, despejamos $\mu$ para obtener su estimador de máxima verosimilitud:
+
+$$
+\hat{\mu}\;=\;\frac{1}{N}\sum_{i=1}^{n}\sum_{j=1}^{t}y_{ij}\;=\;\bar y_{..},
+$$
+
+es decir, la media muestral global de la variable respuesta.
+
+
+Para la estimación de $\tau_j$ se parte derivando la función de log-verosimilitud con respecto a $\tau_j$ e igualándola a cero. Se obtiene:
+
+$$
+\sum_{i=1}^{n}\bigl(y_{ij}-\mu-\tau_j-\beta(x_{ij}-\bar x_{..})\bigr)=0 .
+$$
+
+Luego, separamos las sumatorias y destacamos los términos que dependen de $\tau_j$:
+
+$$
+\sum_{j=1}^{t} y_{ij}
+\;-\; N\mu
+\;-\; N\tau_j
+\;-\; \beta\sum_{j=1}^{n}(x_{ij}-\bar x_{..})=0 .
+$$
+
+Aplicamos la identidad
+
+$$
+\sum_{j=1}^{n}(x_{ij}-\bar x_{..}) = N\bigl(\bar x_{i.}-\bar x_{..}\bigr),
+$$
+
+y despejamos $\tau_j$:
+
+$$
+\tau_j
+=\frac{\displaystyle\sum_{j=1}^{n}y_{ij}
+      \;-\; N\mu
+      \;-\; \beta\,N\bigl(\bar x_{i.}-\bar x_{..}\bigr)}{N}.
+$$
+
+Finalmente, sustituyendo las definiciones de promedios obtenemos el estimador:
+
+$$
+\hat{\tau}_j
+=\bar y_{i.}-\bar y_{..}
+-\beta\bigl(\bar x_{i.}-\bar x_{..}\bigr),
+$$
+
+que representa el efecto del nivel $j$ ajustado por la covariable $x$ y centrado en el promedio global.
+
+
+Para la estimación de $\beta$ se parte derivando la función de log-verosimilitud con respecto a $\beta$ e igualándola a cero. Se obtiene:
+
+$$
+\frac{\partial \ell}{\partial \beta}
+= \frac{1}{\sigma^{2}}
+\sum_{i=1}^{n}\sum_{j=1}^{t}
+\bigl(y_{ij}-\mu-\tau_j-\beta(x_{ij}-\bar x_{..})\bigr)\,(x_{ij}-\bar x_{..})
+= 0 .
+$$
+
+Luego, separamos las sumatorias para destacar los términos que contienen a $\beta$:
+
+$$
+\sum_{i=1}^{n}\sum_{j=1}^{t} y_{ij}(x_{ij}-\bar x_{..})
+\;-\; \mu\sum_{i=1}^{n}\sum_{j=1}^{t}(x_{ij}-\bar x_{..})
+\;-\; \sum_{j=1}^{t}\tau_j\sum_{i=1}^{n}(x_{ij}-\bar x_{..})
+\;-\; \beta\sum_{i=1}^{n}\sum_{j=1}^{t}(x_{ij}-\bar x_{..})^{2}=0 .
+$$
+
+Las dos primeras sumas que acompañan a $\mu$ y a $\tau_j$ se anulan de la siguiente manera:  
+
+$$
+\sum_{i=1}^{n}\sum_{j=1}^{t}(x_{ij}-\bar x_{..}) = 0,
+\qquad
+\sum_{i=1}^{n}\tau_j(x_{ij}-\bar x_{..}) = 0.
+$$
+
+De este modo, despejamos $\beta$:
+
+$$
+\hat{\beta}
+= \frac{\displaystyle
+        \sum_{i=1}^{n}\sum_{j=1}^{t}(y_{ij}-\mu-\tau_j)(x_{ij}-\bar x_{..})}{
+      \displaystyle
+        \sum_{i=1}^{n}\sum_{j=1}^{t}(x_{ij}-\bar x_{..})^{2}} .
+$$
+
+Este es el estimador de máxima verosimilitud para la pendiente asociada a la covariable $x$, análogo al estimador de regresión lineal simple pero ajustado por los efectos de tratamiento $\tau_j$.
+
+
+Para la estimación de $\sigma^{2}$ se deriva la función de log-verosimilitud con respecto a $\sigma^{2}$ e igualamos a cero:
+
+$$
+-\frac{N}{2\sigma^{2}}
+\;+\;
+\frac{1}{2\sigma^{4}}
+\sum_{j=1}^{t}\sum_{i=1}^{n}
+\bigl(y_{ij}-\mu-\tau_{j}-\beta(x_{ij}-\bar x_{..})\bigr)^{2}
+\;=\;0 .
+$$
+
+Multiplicamos por $2\sigma^{4}$ para despejar denominadores:
+
+$$
+-N\sigma^{2}
+\;+\;
+\sum_{j=1}^{t}\sum_{i=1}^{n}
+\bigl(y_{ij}-\mu-\tau_{j}-\beta(x_{ij}-\bar x_{..})\bigr)^{2}=0 .
+$$
+
+Finalmente, despejamos $\sigma^{2}$:
+
+$$
+\hat{\sigma}^{2}
+\;=\;
+\frac{1}{N}\;
+\sum_{j=1}^{t}\sum_{i=1}^{n}
+\bigl(y_{ij}-\mu-\tau_{j}-\beta(x_{ij}-\bar x_{..})\bigr)^{2},
+$$
+
+que corresponde al promedio de los cuadrados de los residuales ajustados por los efectos de tratamiento y la covariable.
+
+
+A partir de la siguiente condición $\sum_{j=1}^t \hat{\tau}_j=0$  para $\beta$ obtenemos:
 
 $$\sum_{j=1}^t(\bar{y}_{\bullet j} - \bar{y}_{\bullet \bullet}) \cdot \sum_{i=1}^n(x_{ij} - \bar{x}_{\bullet \bullet}) - \beta \cdot \sum_{j=1}^t(x_{\bullet j} - \bar{x}_{\bullet \bullet}) \cdot \sum_{i=1}^n(x_{ij} - \bar{x}_{\bullet \bullet}) + \beta \cdot SCT_{xx} = SCT_{xy}$$
+
 Recordemos las formulas para SCTr, SCE y SCT vistas con anterioridad:
 
 $$SCTr_{xy}=\sum_{j=1}^t(\bar{y}_{\bullet j} - \bar{y}_{\bullet \bullet}) \cdot \sum_{i=1}^n(x_{ij} - \bar{x}_{\bullet \bullet})$$
@@ -685,15 +812,15 @@ $$
 \hat{y}_{ij}= \mu + \tau_j + \hat{\beta}(x_{ij} - \bar{x}_{\cdot\cdot})
 $$
 $$
-\hat{y}_{ij}=\bar{y}_{\cdot\cdot} + \left[ \bar{y}_{j\cdot} - \bar{y}_{\cdot\cdot} - \hat{\beta}(\bar{x}_{j\cdot} - \bar{x}_{\cdot\cdot}) \right] + \hat{\beta}(x_{ij} - \bar{x}_{j\cdot})
+\hat{y}_{ij}=\bar{y}_{\cdot\cdot} + \left[ \bar{y}_{\cdot j} - \bar{y}_{\cdot\cdot} - \hat{\beta}(\bar{x}_{\cdot j} - \bar{x}_{\cdot\cdot}) \right] + \hat{\beta}(x_{ij} - \bar{x}_{\cdot j})
 $$
 
 $$
-\hat{y}_{ij}= \bar{y}_{j\cdot} + \hat{\beta}(x_{ij} - \bar{x}_{j\cdot})
+\hat{y}_{ij}= \bar{y}_{\cdot j} + \hat{\beta}(x_{ij} - \bar{x}_{\cdot j})
 $$
 
 $$
-\hat{y}_{ij}= \bar{y}_{j\cdot} + 0.954 \cdot (x_{ij} - \bar{x}_{j\cdot})
+\hat{y}_{ij}= \bar{y}_{\cdot j} + 0.954 \cdot (x_{ij} - \bar{x}_{\cdot j})
 $$
 
 
