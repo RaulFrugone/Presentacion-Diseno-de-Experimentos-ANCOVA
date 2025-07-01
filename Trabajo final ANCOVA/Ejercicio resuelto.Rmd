@@ -1,8 +1,6 @@
 ---
 title: "Resolución computacional ANCOVA"
-author: 
-  - Diego Rocha Retamal
-  - Raúl Frugone Zaror
+author: "Diego Rocha Retamal y Raúl Frugone Zaror"
 date: "01/07/2025"
 output: 
   rmdformats::material:
@@ -39,7 +37,7 @@ library(ggplot2)
 library(tibble)
 ```
 
-## Problema
+# Problema
 
 INCHALAM S.A., empresa productora y exportadora de alambres y derivados desea comprobar si existe una diferencia en la resistencia de una fibra de monofilamento producida por sus tres máquinas diferentes. Se sabe que el **diámetro del material (x)** puede influir en su **resistencia (y)**. Para controlar esta variabilidad, se decide realizar un **Análisis de Covarianza (ANCOVA)**. Se tomaron 5 muestras de cada máquina, registrando el diámetro y la resistencia de cada una. Los datos son los siguientes:
 
